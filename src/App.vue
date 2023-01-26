@@ -1,6 +1,9 @@
 <template>
   <v-app>
-    <appRegister @reg-user="getReg"></appRegister>
+    <appRegister
+      @reg-user="getReg"
+      :error="errorAuth"
+    />
     <v-overlay :value="overlay">
       <v-progress-circular
         indeterminate
@@ -17,8 +20,10 @@ export default {
   name: 'App',
   components: { appRegister },
   data: () => ({
-    overlay: false
+    overlay: false,
+    errorAuth: ''
   }),
+
   methods: {
     async getReg ({ email, password, type }) {
       try {
@@ -28,6 +33,18 @@ export default {
 
         this.overlay = false
       } catch (exception) {}
+    }
+  },
+
+  computed: {
+    error () {
+      return this.$store.getters.error
+    }
+  },
+
+  watch: {
+    error (fbError) {
+      this.errorAuth = fbError.message
     }
   }
 }

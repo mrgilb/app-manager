@@ -9,7 +9,7 @@ export default {
 
         await addNewUser(database, 'users/', response.user.uid, email)
       } catch (exception) {
-        console.log(exception)
+        commit('setError', exception)
       }
     },
 
@@ -19,7 +19,7 @@ export default {
 
         console.log(response)
       } catch (exception) {
-        console.log(exception)
+        commit('setError', exception)
       }
     }
   }

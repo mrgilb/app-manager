@@ -1,5 +1,11 @@
 <template>
   <v-card class="mx-auto app-register" max-width="500" width="320">
+    <v-alert
+      v-if="error !== ''"
+      type="error"
+    >
+    {{ error }}
+  </v-alert>
     <v-form
       class="app-register__reg"
       v-if="showReg"
@@ -142,6 +148,10 @@ export default {
     email: '',
     password: ''
   }),
+
+  props: {
+    error: String
+  },
 
   computed: {
     currentTitle () {
