@@ -1,6 +1,12 @@
 <template>
   <v-app>
     <appRegister @reg-user="getReg"></appRegister>
+    <v-overlay :value="overlay">
+      <v-progress-circular
+        indeterminate
+        size="64"
+      ></v-progress-circular>
+    </v-overlay>
   </v-app>
 </template>
 
@@ -11,11 +17,17 @@ export default {
   name: 'App',
   components: { appRegister },
   data: () => ({
-    //
+    overlay: false
   }),
   methods: {
     async getReg ({ email, password, type }) {
-      await this.$store.dispatch(type, { email, password })
+      try {
+        this.overlay = true
+
+        await this.$store.dispatch(type, { email, password })
+
+        this.overlay = false
+      } catch (exception) {}
     }
   }
 }

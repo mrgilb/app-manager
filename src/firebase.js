@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import { getAnalytics } from 'firebase/analytics'
-import { getDatabase } from 'firebase/database'
+import { getDatabase, ref, set } from 'firebase/database'
 import { getAuth } from 'firebase/auth'
 
 // Your web app's Firebase configuration
@@ -21,6 +21,12 @@ export const app = initializeApp(firebaseConfig)
 export const analytics = getAnalytics(app)
 export const database = getDatabase(app)
 export const auth = getAuth(app)
+
+export async function addNewUser (database, url, uId, email) {
+  await set(ref(database, url + uId), {
+    user: email
+  })
+}
 
 // signInWithEmailAndPassword(auth, email, password)
 //   .then((userCredential) => {

@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import register from './register'
-import login from './login'
+import auth from './auth'
 
 Vue.use(Vuex)
 
@@ -12,17 +11,10 @@ export default new Vuex.Store({
   getters: {
   },
   mutations: {
-    logIn (state) {
-      state.isAuth = true
-    },
-
-    logOut (state) {
-      state.isAuth = false
-    }
   },
   actions: {
   },
   modules: {
-    register, login
+    auth
   }
 })
