@@ -4,7 +4,7 @@
       v-if="error !== ''"
       type="error"
     >
-    {{ error }}
+    {{ errorMessage }}
   </v-alert>
     <v-form
       class="app-register__reg"
@@ -27,7 +27,7 @@
             >
           </v-text-field>
             <span class="text-caption grey--text text--darken-1">
-              This is the email you will use to login to your App-manager account
+              Этот email вы будете использовать для входа в аккаунт
             </span>
           </v-card-text>
         </v-window-item>
@@ -83,7 +83,7 @@
     </v-form>
     <v-form class="app-register__auth" v-if="!showReg" transition="fade-transition">
       <v-card-title class="text-h6 font-weight-regular justify-space-between">
-        <span>Sign-in</span>
+        <span>Авторизация</span>
         <v-avatar color="primary lighten-2" class="subheading white--text" size="24" v-text="stepAuth"></v-avatar>
       </v-card-title>
 
@@ -104,7 +104,7 @@
             </v-text-field>
             <br>
             <button @click="clickToggleAutn">
-              Don't have an account yet?
+              У вас нет аккаунта?
             </button>
           </v-card-text>
         </v-window-item>
@@ -139,6 +139,7 @@
 </template>
 
 <script>
+import { errorListMap } from '../../maps'
 
 export default {
   data: () => ({
@@ -156,14 +157,18 @@ export default {
   computed: {
     currentTitle () {
       switch (this.stepReg) {
-        case 1: return 'Sign-up'
-        case 2: return 'Create a password'
-        default: return 'Account created'
+        case 1: return 'Регистрация'
+        case 2: return 'Придумайте пароль'
+        default: return 'Регистрация завершена'
       }
     },
 
     isValidConfirmPassword () {
       return [value => value === this.password || 'Password doesnt match']
+    },
+
+    errorMessage () {
+      return errorListMap[this.error]
     }
   },
 
