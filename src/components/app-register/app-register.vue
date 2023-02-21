@@ -4,8 +4,8 @@
       v-if="error !== ''"
       type="error"
     >
-    {{ errorMessage }}
-  </v-alert>
+      {{ errorMessage }}
+    </v-alert>
     <v-form
       class="app-register__reg"
       v-if="showReg"
@@ -23,9 +23,10 @@
             <v-text-field
               label="Email"
               value="test@test.com"
-              v-model="email"
+              v-model.trim="$v.email.$model"
+              :rules="isValidEmail"
             >
-          </v-text-field>
+            </v-text-field>
             <span class="text-caption grey--text text--darken-1">
               Этот email вы будете использовать для входа в аккаунт
             </span>
@@ -37,20 +38,23 @@
             <v-text-field
               label="Password"
               type="password"
-              v-model="password"
+              v-model="$v.password.$model"
+              :rules="isValidPassword"
             >
-          </v-text-field>
+            </v-text-field>
             <v-text-field
               label="Confirm Password"
               type="password"
+              v-model="confirmPassword"
               :rules="isValidConfirmPassword"
             >
-          </v-text-field>
+            </v-text-field>
             <span class="text-caption grey--text text--darken-1">
-              Please enter a password for your account
+              Пожалуйста введите пароль от вашего аккаунта
             </span>
-            <button @click="clickToggleAutn">
-              Do you already have an account?
+            <br />
+            <button @click="clickToggleAuth">
+              У вас уже есть аккаунт?
             </button>
           </v-card-text>
         </v-window-item>
@@ -69,18 +73,28 @@
 
       <v-card-actions>
         <v-btn :disabled="stepReg === 1" text @click="stepReg--">
-          Back
+          Назад
         </v-btn>
         <v-spacer></v-spacer>
         <v-btn
-          :disabled="stepReg === 3"
+          v-if="stepReg === 1"
+          :disabled="email && $v.email.$error"
           color="primary"
           depressed
           @click="clickRegButton">
-          Next
+          Далее
+        </v-btn>
+        <v-btn
+          v-if="stepReg >= 2"
+          :disabled="stepReg === 3 || $v.password.$error || password !== confirmPassword"
+          color="primary"
+          depressed
+          @click="clickRegButton">
+          Далее
         </v-btn>
       </v-card-actions>
     </v-form>
+
     <v-form class="app-register__auth" v-if="!showReg" transition="fade-transition">
       <v-card-title class="text-h6 font-weight-regular justify-space-between">
         <span>Авторизация</span>
@@ -93,17 +107,19 @@
             <v-text-field
               label="Email"
               value="test@test.com"
-              v-model="email"
+              v-model="$v.email.$model"
+              :rules="isValidEmail"
             >
             </v-text-field>
             <v-text-field
               label="Password"
               type="password"
-              v-model="password"
+              v-model="$v.password.$model"
+              :rules="isValidPassword"
             >
             </v-text-field>
             <br>
-            <button @click="clickToggleAutn">
+            <button @click="clickToggleAuth">
               У вас нет аккаунта?
             </button>
           </v-card-text>
@@ -127,11 +143,16 @@
           text
           @click="stepAuth--"
         >
-          Back
+          Назад
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn :disabled="stepAuth === 2" color="primary" depressed @click="clickAuthButton">
-          Auth
+        <v-btn
+          :disabled="stepAuth === 2 || isDisableNextButton"
+          color="primary"
+          depressed
+          @click="clickAuthButton"
+        >
+          Войти
         </v-btn>
       </v-card-actions>
     </v-form>
@@ -140,6 +161,7 @@
 
 <script>
 import { errorListMap } from '../../maps'
+import { required, email, minLength } from 'vuelidate/lib/validators'
 
 export default {
   data: () => ({
@@ -147,8 +169,22 @@ export default {
     stepAuth: 1,
     showReg: false,
     email: '',
-    password: ''
+    password: '',
+    confirmPassword: '',
+    activePage: 'auth'
   }),
+
+  validations: {
+    email: {
+      required,
+      email
+    },
+
+    password: {
+      required,
+      minLength: minLength(6)
+    }
+  },
 
   props: {
     error: String
@@ -157,28 +193,41 @@ export default {
   computed: {
     currentTitle () {
       switch (this.stepReg) {
-        case 1: return 'Регистрация'
-        case 2: return 'Придумайте пароль'
-        default: return 'Регистрация завершена'
+        case 1:
+          return 'Регистрация'
+        case 2:
+          return 'Придумайте пароль'
+        default:
+          return 'Регистрация завершена'
       }
     },
 
+    isValidPassword () {
+      return [!this.$v.password.$error || 'Пароль должен содержать не менее 6 символов']
+    },
+
     isValidConfirmPassword () {
-      return [value => value === this.password || 'Password doesnt match']
+      return [value => value === this.password || 'Пароль не совпадает']
+    },
+
+    isValidEmail () {
+      return [!this.$v.email.$error || 'Введите в формате test@test.ru']
     },
 
     errorMessage () {
       return errorListMap[this.error]
+    },
+
+    isDisableNextButton () {
+      this.$v.email.$touch()
+      this.$v.password.$touch()
+      return this.$v.email.$error || this.$v.password.$error
     }
   },
 
   methods: {
-    clickToggleAutn () {
-      if (this.showReg) {
-        this.showReg = false
-      } else {
-        this.showReg = true
-      }
+    clickToggleAuth () {
+      this.showReg = !this.showReg
       this.stepAuth = 1
       this.stepReg = 1
     },
@@ -218,6 +267,14 @@ export default {
         })
       }
     }
+  },
+
+  mounted () {
+    this.$refs.reg ? this.activePage = 'reg' : this.activePage = 'auth'
+  },
+
+  updated () {
+    this.$refs.reg ? this.activePage = 'reg' : this.activePage = 'auth'
   }
 }
 </script>
