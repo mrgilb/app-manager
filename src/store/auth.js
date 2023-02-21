@@ -3,21 +3,34 @@ import { auth, database, addNewUser } from '../firebase'
 
 export default {
   actions: {
-    async register ({ dispath, commit }, { email, password }) {
+    async register ({
+      commit
+    }, {
+      email,
+      password
+    }) {
       try {
         const response = await createUserWithEmailAndPassword(auth, email, password)
 
         await addNewUser(database, 'users/', response.user.uid, email)
+
+        commit('setAuthState', true)
       } catch (exception) {
         commit('setError', exception)
       }
     },
 
-    async login ({ dispath, commit }, { email, password }) {
+    async login ({
+      commit
+    }, {
+      email,
+      password
+    }) {
       try {
         const response = await signInWithEmailAndPassword(auth, email, password)
 
-        console.log(response)
+        console.log(response.user.uid)
+        commit('setAuthState', true)
       } catch (exception) {
         commit('setError', exception)
       }

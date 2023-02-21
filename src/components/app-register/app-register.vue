@@ -1,11 +1,5 @@
 <template>
   <v-card class="mx-auto app-register" max-width="500" width="320">
-    <v-alert
-      v-if="error !== ''"
-      type="error"
-    >
-      {{ errorMessage }}
-    </v-alert>
     <v-form
       class="app-register__reg"
       v-if="showReg"
@@ -52,7 +46,7 @@
             <span class="text-caption grey--text text--darken-1">
               Пожалуйста введите пароль от вашего аккаунта
             </span>
-            <br />
+            <br/>
             <button @click="clickToggleAuth">
               У вас уже есть аккаунт?
             </button>
@@ -61,10 +55,17 @@
 
         <v-window-item :value="3">
           <div class="pa-4 text-center">
-            <h3 class="text-h6 font-weight-light mb-2">
-              Welcome to App-Manager
-            </h3>
-            <span class="text-caption grey--text">Thanks for signing up!</span>
+              <v-alert
+                v-if="error"
+                type="error"
+              >
+                {{ errorMessage }}
+              </v-alert>
+              <template v-if="!error">
+                <h3 class="text-h6 font-weight-light mb-2">
+                  Добро пожаловать <br />в App-Manager
+                </h3>
+              </template>
           </div>
         </v-window-item>
       </v-window>
@@ -72,7 +73,7 @@
       <v-divider></v-divider>
 
       <v-card-actions>
-        <v-btn :disabled="stepReg === 1" text @click="stepReg--">
+        <v-btn :disabled="stepReg === 1" text @click="clickBackButton">
           Назад
         </v-btn>
         <v-spacer></v-spacer>
@@ -127,10 +128,17 @@
 
         <v-window-item :value="2">
           <div class="pa-4 text-center">
-            <h3 class="text-h6 font-weight-light mb-2">
-              Welcome to App-Manager
-            </h3>
-            <span class="text-caption grey--text">Thanks for signing up!</span>
+            <v-alert
+              v-if="error"
+              type="error"
+            >
+              {{ errorMessage }}
+            </v-alert>
+            <template v-if="!error">
+              <h3 class="text-h6 font-weight-light mb-2">
+                Добро пожаловать <br />в App-Manager
+              </h3>
+            </template>
           </div>
         </v-window-item>
       </v-window>
@@ -141,7 +149,7 @@
         <v-btn
           :disabled="stepAuth === 1"
           text
-          @click="stepAuth--"
+          @click="clickBackButton"
         >
           Назад
         </v-btn>
@@ -187,7 +195,10 @@ export default {
   },
 
   props: {
-    error: String
+    error: {
+      type: String,
+      default: ''
+    }
   },
 
   computed: {
@@ -238,6 +249,18 @@ export default {
 
     clickAuthButton () {
       this.stepAuth++
+    },
+
+    clickBackButton () {
+      this.$emit('clear-error')
+
+      if (this.stepAuth > 0) {
+        this.stepAuth--
+      }
+
+      if (this.stepReg > 0) {
+        this.stepReg--
+      }
     }
   },
 
