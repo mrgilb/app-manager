@@ -67,11 +67,6 @@
               >
                 {{ errorMessage }}
               </v-alert>
-              <template v-if="!error">
-                <h3 class="text-h6 font-weight-light mb-2">
-                  Добро пожаловать <br />в App-Manager
-                </h3>
-              </template>
           </div>
         </v-window-item>
       </v-window>
@@ -140,11 +135,6 @@
             >
               {{ errorMessage }}
             </v-alert>
-            <template v-if="!error">
-              <h3 class="text-h6 font-weight-light mb-2">
-                Добро пожаловать <br />в App-Manager
-              </h3>
-            </template>
           </div>
         </v-window-item>
       </v-window>

@@ -15,6 +15,8 @@
         size="64"
       />
     </v-overlay>
+
+    <router-view/>
   </v-app>
 </template>
 

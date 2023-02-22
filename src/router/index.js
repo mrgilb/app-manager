@@ -4,6 +4,21 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/costs-page',
+    name: 'costs-page',
+    component: () => import('../pages/costs-page/costs-page.vue')
+  },
+  {
+    path: '/cash-page',
+    name: 'cash-page',
+    component: () => import('../pages/cash-page/cash-page.vue')
+  },
+  {
+    path: '/target-page',
+    name: 'target-page',
+    component: () => import('../pages/target-page/target-page.vue')
+  }
 ]
 
 const router = new VueRouter({
