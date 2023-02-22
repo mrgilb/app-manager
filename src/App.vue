@@ -6,6 +6,9 @@
       @clear-error="clearError"
       :error="errorAuth"
     />
+
+    <app-nav v-if="authSet" />
+
     <v-overlay :value="overlay">
       <v-progress-circular
         indeterminate
