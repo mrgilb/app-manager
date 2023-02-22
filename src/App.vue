@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <appRegister
+    <app-register
       v-if="!authSet"
       @reg-user="getReg"
       @clear-error="clearError"
@@ -10,17 +10,14 @@
       <v-progress-circular
         indeterminate
         size="64"
-      ></v-progress-circular>
+      />
     </v-overlay>
   </v-app>
 </template>
 
 <script>
-import appRegister from './components/app-register/app-register.vue'
-
 export default {
   name: 'App',
-  components: { appRegister },
   data: () => ({
     overlay: false,
     errorAuth: ''
