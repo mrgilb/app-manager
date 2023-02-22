@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth'
-import { auth, database, addNewUser } from '../firebase'
+import { auth, database, addNewUser } from '../tools/firebase'
 
 export default {
   actions: {
