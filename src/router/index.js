@@ -18,6 +18,11 @@ const routes = [
     path: '/target-page',
     name: 'target-page',
     component: () => import('../pages/target-page/target-page.vue')
+  },
+  {
+    path: '/general-page',
+    name: 'general-page',
+    component: () => import('../pages/general-page/general-page.vue')
   }
 ]
 

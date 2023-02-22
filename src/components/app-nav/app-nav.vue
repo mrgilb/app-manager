@@ -29,7 +29,7 @@
               <v-list-item-title>Выход</v-list-item-title>
             </v-list-item>
 
-            <v-list-item :to="{path: '/'}">
+            <v-list-item :to="{path: '/general-page'}">
               <v-list-item-icon>
                 <v-icon>mdi-account</v-icon>
               </v-list-item-icon>
