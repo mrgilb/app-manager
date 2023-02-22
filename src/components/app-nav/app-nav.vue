@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     handleClickExit () {
-      this.$store.commit('setAuthState', false)
+      this.$store.dispatch('logOut')
     }
   }
 }

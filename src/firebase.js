@@ -23,7 +23,6 @@ export const database = getDatabase(app)
 export const auth = getAuth(app)
 
 export async function addNewUser (database, url, uId, email, name) {
-  console.log(name)
   await set(ref(database, url + uId), {
     user: email,
     name: name

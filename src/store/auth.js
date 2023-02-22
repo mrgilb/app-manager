@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import { auth, database, addNewUser } from '../firebase'
 
 export default {
@@ -35,6 +35,11 @@ export default {
       } catch (exception) {
         commit('setError', exception)
       }
+    },
+
+    async logOut ({ commit }) {
+      await signOut(auth)
+      commit('setAuthState', false)
     }
   }
 }
