@@ -16,7 +16,7 @@
       />
     </v-overlay>
 
-    <router-view/>
+    <router-view v-if="authSet"/>
   </v-app>
 </template>
 
