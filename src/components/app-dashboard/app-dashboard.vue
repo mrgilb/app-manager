@@ -19,22 +19,12 @@
 
 <script>
 
-const gradients = [
-  ['#222'],
-  ['#42b3f4'],
-  ['red', 'orange', 'yellow'],
-  ['purple', 'violet'],
-  ['#00c6ff', '#F0F', '#FF0'],
-  ['#f72047', '#ffd200', '#1feaea']
-]
-
 export default {
   data () {
     return {
       name: 'app-dashboard',
       fill: false,
       selectedGradient: ['#42b3f4'],
-      gradients,
       padding: 20,
       radius: 10,
       value: [10232, 7567, 4352, 1203, 43223, 31223, 20011, 14300, 25664, 12331],
