@@ -30,6 +30,7 @@ export default {
     async getReg ({
       email,
       password,
+      name,
       type
     }) {
       try {
@@ -37,7 +38,8 @@ export default {
 
         await this.$store.dispatch(type, {
           email,
-          password
+          password,
+          name
         })
 
         this.overlay = false

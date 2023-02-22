@@ -21,6 +21,12 @@
               :rules="isValidEmail"
             >
             </v-text-field>
+            <v-text-field
+              label="Ваше имя"
+              v-model.trim="$v.name.$model"
+              :rules="isValidName"
+            >
+            </v-text-field>
             <span class="text-caption grey--text text--darken-1">
               Этот email вы будете использовать для входа в аккаунт
             </span>
@@ -79,7 +85,7 @@
         <v-spacer></v-spacer>
         <v-btn
           v-if="stepReg === 1"
-          :disabled="email && $v.email.$error"
+          :disabled="email && $v.email.$error || name && $v.name.$error"
           color="primary"
           depressed
           @click="clickRegButton">
@@ -177,6 +183,7 @@ export default {
     stepAuth: 1,
     showReg: false,
     email: '',
+    name: '',
     password: '',
     confirmPassword: '',
     activePage: 'auth'
@@ -186,6 +193,10 @@ export default {
     email: {
       required,
       email
+    },
+
+    name: {
+      required
     },
 
     password: {
@@ -223,6 +234,10 @@ export default {
 
     isValidEmail () {
       return [!this.$v.email.$error || 'Введите в формате test@test.ru']
+    },
+
+    isValidName () {
+      return [!this.$v.name.$error || 'Введите ваше имя']
     },
 
     errorMessage () {
@@ -269,10 +284,12 @@ export default {
       if (this.stepReg === 3) {
         const email = this.email
         const password = this.password
+        const name = this.name
 
         this.$emit('reg-user', {
           email,
           password,
+          name,
           type: 'register'
         })
       }

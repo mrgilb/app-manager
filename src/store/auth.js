@@ -7,12 +7,13 @@ export default {
       commit
     }, {
       email,
-      password
+      password,
+      name
     }) {
       try {
         const response = await createUserWithEmailAndPassword(auth, email, password)
 
-        await addNewUser(database, 'users/', response.user.uid, email)
+        await addNewUser(database, 'users/', response.user.uid, email, name)
 
         commit('setAuthState', true)
       } catch (exception) {
