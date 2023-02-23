@@ -1,5 +1,5 @@
 <template>
-  <v-container class="app-dashboard" fluid>
+  <v-container class="app-dashboard rounded-lg" fluid>
     <v-sparkline
       :fill="fill"
       :gradient="selectedGradient"
